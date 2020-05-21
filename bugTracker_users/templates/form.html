@@ -8,10 +8,22 @@
     <body>
         <a>Home</a>
         <a>Submit Ticket</a>
+
+        {% if auth %}
+            <a href={% url 'new_user' %}>New User</a>
+            <a href={% url 'logout' %}>Logout</a>
+        {% endif %}
+
         <h1>{{ page_title }}</h1>
         <form action="" method="POST">
+            {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">{{ button_value }</button>
+            <button type="submit">{{ button_value }}</button>
         </form>
+
+        {% if error %}
+            <p>{{ error }}</p>
+        {% endif %}
+
     </body>
 </html>
