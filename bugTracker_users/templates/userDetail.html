@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ page_title }}</title>
+    </head>
+    <body>
+        <a>Home</a>
+        <a>Submit Ticket</a>
+        <a href={% url 'new_user' %}>New User</a>
+        <a href={% url 'logout' %}>Logout</a>
+        <h1>{{ name }}</h1>
+        <h3>Tickets</h3>
+        <h4>Assigned</h4>
+        <h4>Completed</h4>
+        <h4>Filed</h4>
+    </body>
+</html>
