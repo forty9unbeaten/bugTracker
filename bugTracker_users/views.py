@@ -1,5 +1,5 @@
-from django.shortcuts import render, reverse
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, reverse, get_object_or_404
+from django.http import HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from bugTracker_users.forms import LoginForm, NewUserForm
@@ -120,5 +120,28 @@ def new_user_view(request):
             'button_value': 'Create',
             'form': form,
             'auth': request.user.is_authenticated
+        }
+    )
+
+
+@login_required
+def user_detail_view(request, userId):
+    # GET request handling
+    user = TrackerUser.objects.get(id=userId)
+    if user.display_name:
+        name = user.display_name
+    else:
+        name = user.username
+    ''' 
+    !!!!!! PARSE TICKETS BASED ON TICKET STATUS !!!!!!
+        - TICKETS ASSIGNED TO USER
+        - TICKETS FILED BY USER
+        - TICKETS COMPLETED BY USER
+    '''
+    return render(
+        request=request,
+        template_name='userDetail.html',
+        context={
+            'name': name
         }
     )
