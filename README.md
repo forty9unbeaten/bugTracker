@@ -14,7 +14,7 @@ It's important to focus on more things that Django is good at... that may not be
 -   Allows assigning a ticket to the currently logged in user
 -   Allows marking a ticket as invalid
 -   Allows marking a ticket as complete
--   Allows editing tickets (we will limit this to Title and Description, do not include other any of the other fields)
+-   Allows editing tickets (we will limit this to Title and Description, do not include any of the other fields)
 -   Has a user detail page where you can see:
 
     -   The current tickets assigned to a user
