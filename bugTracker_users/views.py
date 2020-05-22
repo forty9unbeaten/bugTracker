@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from bugTracker_users.forms import LoginForm, NewUserForm
 from bugTracker_users.models import TrackerUser
+from bugTracker_tickets.models import BugTicket
 
 # Create your views here.
 
@@ -16,10 +17,8 @@ def login_view(request):
             login_data = form.cleaned_data
             user = authenticate(
                 request=request,
-                credentials={
-                    'username': login_data['username'],
-                    'password': login_data['password']
-                }
+                username=login_data['username'],
+                password=login_data['password']
             )
             if user:
                 # login creds provided are valid
@@ -33,10 +32,9 @@ def login_view(request):
                     return HttpResponseRedirect(redirect_path)
                 else:
                     # no redirect path with request
-                    pass
-                    '''
-                    !!!!!! REDIRECT TO HOME PAGE, DO NOT FORGET THIS !!!!!!
-                    '''
+                    return HttpResponseRedirect(
+                        reverse('homepage')
+                    )
             else:
                 # login creds are NOT valid
                 form = LoginForm()
@@ -89,9 +87,9 @@ def new_user_view(request):
                     display_name=user_data['display_name']
                 )
                 new_user.save()
-                '''
-                !!!!!! REDIRECT TO HOME PAGE, DON'T FORGET THIS !!!!!!
-                '''
+                return HttpResponseRedirect(
+                    reverse('homepage')
+                )
             else:
                 # password and password confirmation fields DO NOT match
                 form = NewUserForm(initial={
@@ -132,16 +130,18 @@ def user_detail_view(request, userId):
         name = user.display_name
     else:
         name = user.username
-    ''' 
-    !!!!!! PARSE TICKETS BASED ON TICKET STATUS !!!!!!
-        - TICKETS ASSIGNED TO USER
-        - TICKETS FILED BY USER
-        - TICKETS COMPLETED BY USER
-    '''
+
+    created_tickets = BugTicket.objects.filter(creator=user)
+    assigned_tickets = BugTicket.objects.filter(assigned_to=user)
+    completed_tickets = BugTicket.objects.filter(completed_by=user)
+
     return render(
         request=request,
         template_name='userDetail.html',
         context={
-            'name': name
+            'name': name,
+            'assigned': assigned_tickets,
+            'completed': completed_tickets,
+            'filed': created_tickets
         }
     )

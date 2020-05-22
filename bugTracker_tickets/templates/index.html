@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Bug Tracker</title>
+    </head>
+    <body>
+        <a href={% url 'homepage' %}>Home</a>
+        <a href={% url 'new_ticket' %}>Submit Ticket</a>
+        <a href={% url 'new_user' %}>New User</a>
+        <a href={% url 'logout' %}>Logout</a>
+        <h1>Bug Tracker</h1>
+        <h2>Report and monitor new and existing bugs</h2>
+        <h4>Hello, {{ user }}</h4>
+        <br>
+        <h3>Open Tickets</h3>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Created By</th>
+            </tr>
+            {% for ticket in open %}
+                <tr>
+                    <td><a href={% url 'ticket_detail' ticket.id %}>{{ ticket.title}}</a></td>
+                    <td><a href='./users/{{ ticket.creator.id }}'>{{ ticket.creator.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h3>In-Progress Tickets</h3>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Assigned To</th>
+            </tr>
+            {% for ticket in in_progress %}
+                <tr>
+                    <td><a href={% url 'ticket_detail' ticket.id %}>{{ ticket.title}}</a></td>
+                    <td><a href='./users/{{ ticket.assigned_to.id }}'>{{ ticket.assigned_to.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Completed Tickets</h3>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Completed By</th>
+            </tr>
+            {% for ticket in complete %}
+                <tr>
+                    <td><a href={% url 'ticket_detail' ticket.id %}>{{ ticket.title}}</a></td>
+                    <td><a href='./users/{{ ticket.completed_by.id }}'>{{ ticket.completed_by.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h3>Marked as Invalid</h3>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Created By</th>
+            </tr>
+            {% for ticket in invalid %}
+                <tr>
+                    <td><a href={% url 'ticket_detail' ticket.id %}>{{ ticket.title}}</a></td>
+                    <td><a href='./users/{{ ticket.creator.id }}'>{{ ticket.creator.username }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
