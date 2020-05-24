@@ -19,7 +19,7 @@ class BugTicket(models.Model):
         max_length=11,
         choices=[
             ('open', 'Open'),
-            ('in progress', 'In progress'),
+            ('in progress', 'In Progress'),
             ('complete', 'Complete'),
             ('invalid', 'Invalid')
         ],
