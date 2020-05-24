@@ -104,7 +104,33 @@ def ticket_detail_view(request, ticketId):
             )
 
     # GET request handling
-    form = TicketDetailForm(instance=ticket)
+
+    '''
+    
+    '''
+    assigned_to_user = False
+    completed_ticket = False
+    invalid_ticket = False
+
+    if ticket.status == 'complete':
+        completed_ticket = True
+    elif ticket.status == 'invalid':
+        invalid_ticket = True
+    elif ticket.status == 'in progress' and ticket.assigned_to == request.user:
+        assigned_to_user = True
+
+    form = TicketDetailForm(
+        data={
+            'title': ticket.title.title(),
+            'status': ticket.status.title(),
+            'description': ticket.description,
+            'creator': ticket.creator,
+            'assign': assigned_to_user,
+            'completed': completed_ticket,
+            'invalid': invalid_ticket
+
+        }
+    )
     form.fields['creator'].queryset = TrackerUser.objects.filter(
         id=ticket.creator.id)
 
