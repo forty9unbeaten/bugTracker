@@ -12,6 +12,8 @@ class NewTicketForm(forms.ModelForm):
 
 
 class TicketDetailForm(NewTicketForm):
+    status = forms.CharField(label='Ticket Status',
+                             required=False, max_length=11)
     assign = forms.BooleanField(
         label='Assign to me', required=False, widget=forms.CheckboxInput)
     completed = forms.BooleanField(
